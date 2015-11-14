@@ -51,6 +51,7 @@ while (1) {
 	$ua->transactor->name($ua_strings[$rand_ua]);
 
 	# do a random search or a random site crawl
+	my $site;
 	if (rand(int(10)) % 2) {
 		my $tx = $ua->get('https://www.google.co.uk/search?q=' . $words[rand(int(scalar(@words -1)))]);
 		if (my $res = $tx->success) {
@@ -62,7 +63,7 @@ while (1) {
 		}
 	} else {
 		my $num = int(rand($num_sites-1));
-		my $site = $sites[$num];
+		$site = $sites[$num];
 		chomp($site);
 	}
 	say $site;
@@ -84,7 +85,7 @@ while (1) {
 
 			# recurse
 			if (my $res = $tx->success) {
-				say $res->dom->at('title')->text;
+				# say $res->dom->at('title')->text;
 				# grab array of valid links on the page
 				my @links = $res->dom->find('a[href^="http"]')->each;
 				my $num_links = scalar @links;
